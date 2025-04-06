@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Expense_Tracker.Models.Transaction>
+
+@{
+    ViewData["PageTitle"] = "Transaction";
+    ViewData["PageActionText"] = "+ New Transaction";
+    ViewData["PageActionUrl"] = "/Transaction/AddOrEdit";
+}
+
+<div class="row">
+    <div class="col-md-7">
+        <ejs-grid id="transactins" dataSource="@Model" gridLines="None" allowSorting="true" allowpaging="true">
+            <e-grid-pagesettings pageSize="10"></e-grid-pagesettings>
+
+            <e-grid-columns>
+
+                 <e-grid-column headerText="category" field="CategoryTitleWithIcon"> </e-grid-column>
+                  <e-grid-column headerText="Date" field="Date"  width="110px" type="date" format="dd-MM-yyyy" textAlign="Left"> </e-grid-column>
+                   <e-grid-column headerText="Amount" field="FormattedAmount"  width="110px" textAlign="Right"> </e-grid-column>
+                    <e-grid-column headerText="Actions" template="#ActionColumnTemplate" width="100px" > </e-grid-column> 
+            </e-grid-columns>
+
+        </ejs-grid>
+    </div>
+  <div class="col-md-5 d-flex align-items-center justify-content-center">
+    <div class="widget d-flex align-items-center justify-content-center w-100 h-100" style="background-color:#212b36">
+        <i class="fa-solid fa-shapes fa-3x text-light"></i>
+    </div>
+</div>
+
+</div>
+
+
+<script id="ActionColumnTemplate" type="text/x-template">
+    @{
+        var firstCategory = Model.FirstOrDefault(); // Get the first category
+    }
+
+    @if (firstCategory != null)
+    {
+            <div class="d-flex flex-row justify-content-start">
+                <a class="btn btn-sm  no-a-decoration" href="/Transaction/AddOrEdit/${TransactionId}">
+                    <i class="fa-solid fa-pen fa-lg"></i>
+                </a>
+
+                        <form action="Transaction/Delete/${TransactionId}" method="post">
+                @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-sm btn-link no-a-decoration" 
+                        onclick="return confirm(&quot;Are You Sure to Delete this Record? &quot;)">
+                        <i class="fa-solid fa-trash-can fa-lg text-danger"></i>
+                    </button></form>
+            </div>
+    }
+
+
+
+</script> 

@@ -1,0 +1,177 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["isdashBoard"] = true;
+}
+
+@* Summary Widgets *@
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="d-flex flex-row widget summary income">
+            <div class="d-flex flex-column justify-content-center p-5">
+                <i class="fa-solid fa-dollar-sign fa-2xl"></i>
+            </div>
+            <div class="d-flex flex-column m-auto py-3">
+                <span class="lead">Total Income</span>
+                <h1 class="display-6 fw-bold">@ViewBag.TotalIncome</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="d-flex flex-row widget summary expense">
+            <div class="d-flex flex-column justify-content-center p-5">
+                <i class="fa-solid fa-dollar-sign fa-2xl"></i>
+            </div>
+            <div class="d-flex flex-column m-auto py-3">
+                <span class="lead">Total Expense</span>
+                <h1 class="display-6 fw-bold">@ViewBag.TotalExpense</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="d-flex flex-row widget summary balance">
+            <div class="d-flex flex-column justify-content-center p-5">
+                <i class="fa-solid fa-dollar-sign fa-2xl"></i>
+            </div>
+            <div class="d-flex flex-column m-auto py-3">
+                <span class="lead">Total Balance</span>
+                <h1 class="display-6 fw-bold">@ViewBag.Balance</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Row for Charts -->
+<div class="row d-flex justify-content-between">
+    <!-- Donut Chart (Left Side) -->
+    <div class="col-md-6">
+        <div class="widget-chart">
+            <div class="p-4">
+                <h5 class="fw-bold">Expense By Category</h5>
+            </div>
+            <ejs-accumulationchart id="donutchart" enableSmartLabels background="#1a222b">
+                <e-accumulation-series-collection>
+                    <e-accumulation-series datasource="@ViewBag.DoNutChartData" xName="categoryTitleWithIcon" 
+                    yName="amount" innerRadius="60%" legendShape="Circle" palettes=@(new string[]{"#FF5733","#8B4513","#cb9b00","#33FF57","#0454b5","#7d0a0a","#822690","#4c2090","#453z93","#FFD700"})>
+                        <e-accumulationseries-datalabel name="formattedAmount" visible></e-accumulationseries-datalabel>
+                    </e-accumulation-series>
+                </e-accumulation-series-collection>
+                <e-accumulationchart-legendsettings position="Top" togglerVisibility="false">
+                    <e-legendsettings-textstyle color="#fff" size="1rem"></e-legendsettings-textstyle>
+                </e-accumulationchart-legendsettings>
+                <e-accumulationchart-tooltipsettings enable></e-accumulationchart-tooltipsettings>
+            </ejs-accumulationchart>
+        </div>
+    </div>
+
+    <!-- Spline Chart (Right Side) -->
+    <div class="col-md-6">
+    <div class="widget-chart">
+        <div class="p-4">
+            <h5 class="fw-bold text-white">Income VS Expense</h5>
+        </div>
+            @if (ViewBag.SplineChartData != null && ((IEnumerable<dynamic>)ViewBag.SplineChartData).Any())
+
+
+            {
+                <ejs-chart id="spline-chart" background="#1a222b" palettes=@(new string[]{"#54ffa9","#ffe91a"})>
+                    <!-- X-Axis Configuration -->
+                    <e-chart-primaryxaxis valueType="Category">
+                        <e-majorgridlines width="0"></e-majorgridlines>
+                        <e-majorticklines width="0"></e-majorticklines>
+                            
+                    </e-chart-primaryxaxis>
+
+                    <!-- Y-Axis Configuration -->
+                    <e-chart-primaryyaxis labelFormat="{value} ₹">
+                                 <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
+                                      <e-majorticklines width="0"></e-majorticklines>
+
+                      <e-linestyle width="0"></e-linestyle>
+                    </e-chart-primaryyaxis>
+
+                    <e-chart-chartarea>
+                            <e-chartarea-border width="0"></e-chartarea-border>
+                    </e-chart-chartarea>
+
+                    <!-- Tooltip & Legend -->
+                   @*  <e-chart-tooltipsettings enable="true"></e-chart-tooltipsettings>
+                    <e-chart-legendsettings visible="true"></e-chart-legendsettings> *@
+
+                    <e-series-collection>
+                        <!-- Income Series -->
+                           <e-series dataSource="@ViewBag.SplineChartData" xName="day" width="3" yName="income" 
+         name="Income" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Spline">
+         <e-series-marker visible="true" ></e-series-marker>
+    </e-series>
+
+    <!-- Expense Series -->
+    <e-series dataSource="@ViewBag.SplineChartData" xName="day" width="3" yName="expense" 
+         name="Expense" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Spline">
+         <e-series-marker visible="true" ></e-series-marker>
+    </e-series>
+
+     </e-series-collection>
+    
+      <e-chart-legendsettings position="Top" alignment="Far" togglerVisibility="false">
+                    <e-legendsettings-textstyle color="#fff" size="1rem"></e-legendsettings-textstyle>
+                </e-chart-legendsettings>
+
+
+      <e-chart-tooltipsettings enable shared></e-chart-tooltipsettings>
+
+      </ejs-chart>
+            }
+            else
+            {
+                <p class="text-danger">No data available for Income vs Expense chart.</p>
+            }
+    </div>
+</div>
+</div>
+<hr />
+
+@* Recent Transactions and More *@
+<div class="row">
+
+    <div class="col=md-6">
+
+        <div class="widget">
+
+            <div class="p-4">
+                <h5 class="fw-bold">Recent Transactions</h5>
+            </div>
+            <div class="px-4 pb-4">
+                <ejs-grid id="recent-transactions" dataSource="@ViewBag.Recenttransactions" gridLines="None">
+
+                    <e-grid-columns>
+                        <e-grid-column headerText="Category" field="CategoryTitleWithIcon"></e-grid-column>
+                         <e-grid-column headerText="Date" field="Date" type="Date" format="MMM-dd-yy"></e-grid-column>
+                          <e-grid-column headerText="Amount" field="FormattedAmount" textAlign="Right"></e-grid-column>
+                    </e-grid-columns>
+                    
+                </ejs-grid>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+ 
+
+
+@* <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var chart = document.getElementById('spline-chart').ej2_instances[0];
+        if (chart) {
+            chart.refresh();
+        }
+    });
+</script>
+ *@

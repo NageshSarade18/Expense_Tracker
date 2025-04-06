@@ -1,0 +1,60 @@
+﻿@model Expense_Tracker.Models.Category
+
+@{
+    ViewData["PageTitle"] = Model.categoryId == 0 ? "Create a new category" : "Edit Category";
+}
+
+<div class="row d-flex justify-content-between align-items-center">
+    <!-- Left Side: Form -->
+    <div class="col-md-7">
+        <div class="widget p-5 border border-white rounded shadow" style="border-width: 2px;">
+            <form asp-action="AddOrEdit" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input type="hidden" asp-for="categoryId" value="@Model.categoryId" />
+
+                <div class="mb-3">
+                    <div class='e-btn-group custom-rbt-group'>
+                        <input type="radio" id="radioleft" name="Type" value="Expense" checked="@(Model.Type=="Expense")" />
+                        <label class="e-btn" for="radioleft">Expense</label>
+                        <input type="radio" id="radiomiddle" name="Type" value="Income" checked="@(Model.Type=="income")"/>
+                        <label class="e-btn" for="radiomiddle">Income</label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <ejs-textbox id="Title" name="Title" placeholder="Title" ejs-for="Title" floatLabelType="Always"></ejs-textbox>
+                    <span asp-validation-for="Title" class="text-danger fs-6"></span>
+                </div>
+
+                <div class="mb-3">
+                    <ejs-textbox id="Icon" name="Icon" placeholder="Icon" ejs-for="Icon" floatLabelType="Always"></ejs-textbox>
+                    <span asp-validation-for="Icon" class="text-danger"></span>
+                </div>
+
+                <ejs-button id="Submit" type="Submit" content="Submit" cssClass="e-success"></ejs-button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Right Side: Icon -->
+   <div class="col-md-5">
+    <div class="widget p-5 border border-white rounded shadow d-flex justify-content-center align-items-center"
+         style="border-width: 2px; height: 350px; position: relative;">
+
+        <!-- Centering the icon -->
+        <div class="d-flex justify-content-center align-items-center w-300 h-300">
+            <i class="fa-solid fa-shapes fa-5x text-white"></i>
+        </div>
+
+    </div>
+</div>
+
+
+@* 
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+ *@
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

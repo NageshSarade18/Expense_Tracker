@@ -1,0 +1,69 @@
+﻿@model Expense_Tracker.Models.Transaction
+
+@{
+    ViewData["PageTitle"] = Model.TransactionId == 0 ? "Create a new Transaction" : "Edit Transaction";
+}
+<hr />
+<div class="row">
+    <!-- Left side - Transaction Form -->
+    <div class="col-md-6">
+        <div class="widget p-3 border border-white rounded shadow" style="border-width: 2px;">
+            <form asp-action="AddOrEdit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                 <input type="hidden" asp-for="TransactionId" value="@Model.TransactionId" />
+
+                <!-- Datepicker -->
+               <div class="mb-3">
+    <ejs-datepicker id="date" name="Date" value="@Model.Date" 
+        placeholder="Date" floatLabelType="Always" format="dd-MM-yyyy">
+    </ejs-datepicker>
+   
+</div>
+
+
+                <!-- Category Input -->
+                <div class="mb-3">
+                   <ejs-dropdownlist id="ddlcategory" ejs-for="categoryId" dataSource="@ViewBag.Categories" placeholder="Category" floatLabelType="Always" allowFiltering="true" ignoreAccent="true" filterType="Contains" popupHeight="220px">
+                       <e-dropdownlist-fields value="categoryId" text="TitleWithIcon"></e-dropdownlist-fields></ejs-dropdownlist>
+                        <span asp-validation-for="categoryId" class="text-danger small fs-6"></span>
+                </div>
+
+                <!-- Amount Input -->
+                <div class="mb-3">
+                    <label asp-for="Amount" class="control-label small"></label>
+                    <ejs-numerictextbox id="Amount" name="Amount" value="@Model.Amount" placeholder="Enter Amount" floatLabelType="Always" min="0" format="C0"></ejs-numerictextbox>
+                    <span asp-validation-for="Amount" class="text-danger small fs-6"></span>
+                </div>
+
+                <!-- Note Input -->
+               <div class="mb-3">
+    <ejs-textbox id="note" value="@Model.Note" placeholder="Enter Note" ejs-for="Note" floatLabelType="Always" multiline="true"></ejs-textbox>
+    <span asp-validation-for="Note" class="text-danger fs-6"></span>
+</div>
+
+
+                <!-- Submit Button -->
+           <!-- Submit Button -->
+<div class="mb-3 mt-3">
+   <ejs-button id="Submit" type="Submit" content="Submit" cssClass="e-success"></ejs-button>
+</div>
+
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Right side - Icon -->
+    <div class="col-md-6 d-flex justify-content-center align-items-center">
+        <div class="widget p-3 border border-white rounded shadow text-center"
+            style="border-width: 2px; height: 200px; width: 70%; display: flex; justify-content: center; align-items: center;">
+            <i class="fa-solid fa-money-bill-transfer fa-2x text-white"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Back to List -->
+@* <div class="mt-2">
+    <a asp-action="Index" class="small">Back to List</a>
+</div>
+ *@
